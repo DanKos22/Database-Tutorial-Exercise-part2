@@ -1,0 +1,65 @@
+mysql> CREATE DATABASE newdatabase;
+
+mysql> USE newdatabase;
+
+mysql> CREATE TABLE person (
+            id INT NOT NULL AUTO_INCREMENT,
+            name VARCHAR(50) NOT NULL,
+			age INT NOT NULL,
+			email VARCHAR(50) NOT NULL,
+			PRIMARY KEY (id)
+		);
+	  
+mysql>	CREATE TABLE address (
+			id INT NOT NULL AUTO_INCREMENT,
+			person_id INT NOT NULL,
+			street VARCHAR(50) NOT NULL,
+			city VARCHAR(50) NOT NULL,
+			county VARCHAR(50) NOT NULL,
+			PRIMARY KEY (id),
+			FOREIGN KEY (person_id) REFERENCES person(id)
+		);
+	
+mysql>	INSERT INTO person (name, age, email) VALUES
+	    ('John', 25, 'john@example.com'),
+		('Paulina', 22, 'paulina@example.com'),
+		('Mike', 30, 'mike@example.com');
+		
+mysql>	INSERT INTO address (person_id, street, city, county) VALUES
+	    (1, '123 Main St', 'Anytown', 'Anycounty'),
+		(2, '456 Some St', 'Somecity', 'Somecounty'),
+		(3, '789 Other St', 'Othercity', 'Othercounty');
+		
+mysql>	SELECT FROM address
+		JOIN person ON address.person_id = person.id
+		WHERE address.county = 'Somecounty';
+	
+mysql>	UPDATE person 
+		SET name = 'Dan', age = 33, email = 'G00397054@atu.ie' WHERE email = 'john@example.com';
+	
+mysql>	SELECT * FROM person p;
+	
+mysql>	UPDATE address
+		SET street = 'college lane', city = 'gort', county = 'galway'
+		WHERE person_id = (SELECT id FROM person WHERE email = 'G00397054@atu.ie');
+	
+mysql>	SELECT * FROM person p JOIN address a WHERE p.id = a.person_id;
+	
+mysql>	START TRANSACTION;
+	
+mysql>	INSERT INTO person (name, age, email) VALUES ('John Doe', 25, 'john.doe@example.com');
+	
+mysql>	SET @person_id = LAST_INSERT_ID();
+	
+mysql>	INSERT INTO address (person_id, street, city, county) VALUES (@person_id, '123 Main St', 'Anytown', 'Anycounty');
+	
+mysql>	COMMIT;
+	
+mysql>	SELECT * FROM person p JOIN address a WHERE p.id = a.person_id;
+	
+mysql>	DELETE a FROM address a WHERE a.id = 4;
+	
+mysql>	DELETE p FROM person p WHERE p.id = 4;
+	
+mysql>	SELECT * FROM person JOIN address a WHERE p.id = a.person_id;
+	
